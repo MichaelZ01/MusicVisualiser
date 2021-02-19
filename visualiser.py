@@ -44,18 +44,18 @@ if __name__ == "__main__":
     # matrix of frequencies and time
     # hop_length: number of audio samples between adjacent frames
     # n_fft: number of samples in each frame
-    stft = np.abs(librosa.stft(timeSeries, hop_length=512, n_fft=2048*8))
+    stft = np.abs(librosa.stft(timeSeries, hop_length=512, n_fft=2048*4))
     
     # Convert amplitude to decibels
     D = librosa.amplitude_to_db(stft, ref=np.max)
 
     # Get frequencies
-    frequencies = librosa.core.fft_frequencies(n_fft=2048*8)
+    frequencies = librosa.core.fft_frequencies(n_fft=2048*4)
     frequenciesIndexRatio = len(frequencies) / frequencies[len(frequencies) - 1]
     frequencies = np.arange(100, 10000, 100)
 
     # Get time periods
-    times = librosa.core.frames_to_time(np.arange(D.shape[1]), sr=sampleRate, hop_length=512, n_fft=2048*8)
+    times = librosa.core.frames_to_time(np.arange(D.shape[1]), sr=sampleRate, hop_length=512, n_fft=2048*4)
     timeIndexRatio = len(times) / times[len(times) - 1]
 
     
