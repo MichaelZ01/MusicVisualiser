@@ -37,6 +37,9 @@ if __name__ == "__main__":
     # Sample file from librosa
     filename = librosa.example('nutcracker')
 
+    # Own audio file
+    #filename = "Song.wav"
+
     # timeSeries: 1-dimensional numpy.ndarray of floating-point values
     # sampleRate: number of samples recorded per second
     timeSeries, sampleRate = librosa.load(filename)
@@ -66,7 +69,13 @@ if __name__ == "__main__":
     pygame.init()
 
     # Set up the drawing window
-    screen = pygame.display.set_mode([990, 800])
+    screen = pygame.display.set_mode([1010, 800])
+    pygame.display.set_caption('Visualiser')
+
+    font = pygame.font.SysFont('Consolas', 32)
+    text = font.render('Made by MichaelZ01', True, (51, 51, 255))
+    textRect = text.get_rect()
+    textRect.center = (505, 300)
 
     # Create bar objects
     x = 10
@@ -83,7 +92,7 @@ if __name__ == "__main__":
     second_count = last = pygame.time.get_ticks()
 
     # One bar is initially filled
-    filledBars = 1
+    barCount = filledBars = 1
     while True:
 
         # Filled and Unfilled polygons
@@ -101,14 +110,17 @@ if __name__ == "__main__":
         last = t
 
         # Increment bars filled if a beat occurs
-        if seconds >= beat_times[filledBars - 1]:
+        if seconds >= beat_times[barCount - 1] and barCount < len(beat_times):
             if filledBars == 98:
                 filledBars = 1
             else:
+                barCount += 1
                 filledBars += 1
 
         # Fill background
         screen.fill((0, 0, 0))
+
+        screen.blit(text, textRect)
 
         # Add polygon coordinates
         polyFilled.append([10, 700])
@@ -130,7 +142,7 @@ if __name__ == "__main__":
 
         # Finish polygon
         polyFilled.append([10 * filledBars + 10, 700])
-        polyUnfilled.append([990, 700])
+        polyUnfilled.append([1000, 700])
 
         # Render polygon
         pygame.draw.polygon(screen, [51, 51, 255], polyFilled)
